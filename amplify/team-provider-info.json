@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-dropgo-dev-203149-authRole",
+      "UnauthRoleArn": "arn:aws:iam::720828537298:role/amplify-dropgo-dev-203149-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::720828537298:role/amplify-dropgo-dev-203149-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-dropgo-dev-203149-deployment",
+      "UnauthRoleName": "amplify-dropgo-dev-203149-unauthRole",
+      "StackName": "amplify-dropgo-dev-203149",
+      "StackId": "arn:aws:cloudformation:us-east-1:720828537298:stack/amplify-dropgo-dev-203149/a266e0d0-7d11-11ec-b376-12f92f141051",
+      "AmplifyAppId": "d26xsytb927kcd"
+    }
+  }
+}
