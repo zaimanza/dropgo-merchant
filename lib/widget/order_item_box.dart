@@ -52,13 +52,26 @@ class OrderItemBox extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.green,
-                        ),
-                      ),
+                      child: itemImg.startsWith("http") == true
+                          ? Container(
+                              width: double.infinity,
+                              height: 250,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Colors.grey),
+                                color: Colors.white,
+                                // shape: StadiumBorder(),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  itemImg,
+                                  fit: BoxFit.cover,
+                                  filterQuality: FilterQuality.low,
+                                ),
+                              ),
+                            )
+                          : Container(),
                     ),
                   ],
                 ),

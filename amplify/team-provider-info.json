@@ -10,6 +10,12 @@
       "StackName": "amplify-dropgo-dev-203149",
       "StackId": "arn:aws:cloudformation:us-east-1:720828537298:stack/amplify-dropgo-dev-203149/a266e0d0-7d11-11ec-b376-12f92f141051",
       "AmplifyAppId": "d26xsytb927kcd"
+    },
+    "categories": {
+      "auth": {
+        "dropgodbe6b626": {},
+        "true": {}
+      }
     }
   }
 }

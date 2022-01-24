@@ -1,0 +1,21 @@
+{
+    "appName": "dropgo",
+    "roleName": "pinpointLambdaRole5bc73b00",
+    "cloudformationPolicyName": "cloudformationPolicy5bc73b00",
+    "cloudWatchPolicyName": "cloudWatchPolicy5bc73b00",
+    "pinpointPolicyName": "pinpointPolicy5bc73b00",
+    "authPolicyName": "pinpoint_amplify_5bc73b00",
+    "unauthPolicyName": "pinpoint_amplify_5bc73b00",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

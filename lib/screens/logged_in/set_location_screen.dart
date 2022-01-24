@@ -4,6 +4,7 @@ import 'package:dropgo/const/string_capital.dart';
 import 'package:dropgo/models/address_model.dart';
 import 'package:dropgo/models/item_model.dart';
 import 'package:dropgo/models/receiver_model.dart';
+import 'package:dropgo/providers/amplify_provider.dart';
 import 'package:dropgo/providers/cart_provider.dart';
 import 'package:dropgo/providers/connectivity_provider.dart';
 import 'package:dropgo/providers/google_maps_provider.dart';
@@ -52,7 +53,6 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   bool isUnitFloorEmpty = false;
   bool isUnitFloorErr = false;
 
-  TextEditingController itemImgController = TextEditingController();
   bool isItemImgEmpty = false;
   bool isItemImgErr = false;
   TextEditingController itemInstructionController = TextEditingController();
@@ -64,6 +64,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   TextEditingController pNumberController = TextEditingController();
   bool isPNumberEmpty = false;
   bool isPNumberErr = false;
+  final ValueNotifier<String> uploadedUrl = ValueNotifier<String>("");
 
   @override
   void initState() {
@@ -114,7 +115,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
           .split(",");
       context.read(googleMapsProvider).settingMarker(
           LatLng(double.parse(tempLatLng[0]), double.parse(tempLatLng[1])));
-      itemImgController.text =
+      uploadedUrl.value =
           context.read(cartProvider).items[widget.index].itemImg;
       itemInstructionController.text =
           context.read(cartProvider).items[widget.index].itemInstruction;
@@ -382,107 +383,136 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
           },
         ),
       ),
-      body: SlidingUpPanel(
-        maxHeight: MediaQuery.of(context).size.height,
-        minHeight: 78.38274932614556,
-        snapPoint: 0.5,
-        controller: panelController,
-        defaultPanelState: PanelState.CLOSED,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(18.0),
-          topRight: Radius.circular(18.0),
-        ),
-        onPanelSlide: (slideValue) {
-          // setState(() {
-          //   transparentPanel = slideValue;
-          //   if (slideValue <= 0.5) {
-          //     transparentPanel = 0;
-          //   }
-          //   dissapearPanel = (8 * slideValue) - 4;
-          //   backgroundPanel = (2 * slideValue) - 1;
-          // });
-        },
-        panelBuilder: (sc) => drawerWidget(sc),
-        body: Consumer(
-          builder: (context, watch, child) {
-            return SizedBox(
-              //GoogleMap
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: (watch(googleMapsProvider).center != null)
-                  ? Stack(
-                      children: [
-                        GoogleMap(
-                          mapToolbarEnabled: false,
-                          padding: const EdgeInsets.only(bottom: 80),
-                          zoomControlsEnabled: false,
-                          minMaxZoomPreference:
-                              const MinMaxZoomPreference(6.5, 30),
-                          onMapCreated: (GoogleMapController controller) {
-                            watch(googleMapsProvider).mapController =
-                                controller;
-                            watch(googleMapsProvider).mapController.setMapStyle(
-                                watch(googleMapsProvider).mapStyle);
-                          },
-                          initialCameraPosition: CameraPosition(
-                            target: watch(googleMapsProvider).center,
-                            zoom: watch(googleMapsProvider).zoomCamera,
-                          ),
-                          markers:
-                              Set.from(watch(googleMapsProvider).markers.value),
-                          // circles: Set.from(myCircle),
-                          onLongPress: (tappedLocation) {
-                            context
-                                .read(googleMapsProvider)
-                                .handleTap(tappedLocation);
-                            panelController.animatePanelToSnapPoint();
-                            setState(() {});
-                          },
-                        ),
-                        Column(
-                          // widget2 kecik dkt screen
-                          mainAxisAlignment: MainAxisAlignment.end,
+      body: Stack(
+        children: [
+          SlidingUpPanel(
+            maxHeight: MediaQuery.of(context).size.height,
+            minHeight: 78.38274932614556,
+            snapPoint: 0.5,
+            controller: panelController,
+            defaultPanelState: PanelState.CLOSED,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(18.0),
+              topRight: Radius.circular(18.0),
+            ),
+            onPanelSlide: (slideValue) {
+              // setState(() {
+              //   transparentPanel = slideValue;
+              //   if (slideValue <= 0.5) {
+              //     transparentPanel = 0;
+              //   }
+              //   dissapearPanel = (8 * slideValue) - 4;
+              //   backgroundPanel = (2 * slideValue) - 1;
+              // });
+            },
+            panelBuilder: (sc) => drawerWidget(sc),
+            body: Consumer(
+              builder: (context, watch, child) {
+                return SizedBox(
+                  //GoogleMap
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: (watch(googleMapsProvider).center != null)
+                      ? Stack(
                           children: [
-                            Padding(
-                              //butang merah
-                              padding: const EdgeInsets.only(
-                                right: 16.0,
-                                bottom: 114.0,
+                            GoogleMap(
+                              mapToolbarEnabled: false,
+                              padding: const EdgeInsets.only(bottom: 80),
+                              zoomControlsEnabled: false,
+                              minMaxZoomPreference:
+                                  const MinMaxZoomPreference(6.5, 30),
+                              onMapCreated: (GoogleMapController controller) {
+                                watch(googleMapsProvider).mapController =
+                                    controller;
+                                watch(googleMapsProvider)
+                                    .mapController
+                                    .setMapStyle(
+                                        watch(googleMapsProvider).mapStyle);
+                              },
+                              initialCameraPosition: CameraPosition(
+                                target: watch(googleMapsProvider).center,
+                                zoom: watch(googleMapsProvider).zoomCamera,
                               ),
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: FloatingActionButton(
-                                  onPressed: () async {
-                                    final Position _locationResult =
-                                        await Geolocator.getCurrentPosition(
-                                      desiredAccuracy: LocationAccuracy.high,
-                                    );
-                                    if (_locationResult != null) {}
-                                    context.read(googleMapsProvider).handleTap(
-                                        LatLng(_locationResult.latitude,
-                                            _locationResult.longitude));
-                                    panelController.animatePanelToSnapPoint();
-                                    setState(() {});
-                                  },
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.padded,
-                                  backgroundColor: Colors.yellow,
-                                  child: const Icon(
-                                    Icons.gps_fixed,
-                                    size: 26.0,
-                                    color: Colors.black,
+                              markers: Set.from(
+                                  watch(googleMapsProvider).markers.value),
+                              // circles: Set.from(myCircle),
+                              onLongPress: (tappedLocation) {
+                                context
+                                    .read(googleMapsProvider)
+                                    .handleTap(tappedLocation);
+                                panelController.animatePanelToSnapPoint();
+                                setState(() {});
+                              },
+                            ),
+                            Column(
+                              // widget2 kecik dkt screen
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  //butang merah
+                                  padding: const EdgeInsets.only(
+                                    right: 16.0,
+                                    bottom: 114.0,
                                   ),
-                                ),
-                              ),
-                            )
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: FloatingActionButton(
+                                      onPressed: () async {
+                                        final Position _locationResult =
+                                            await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              LocationAccuracy.high,
+                                        );
+                                        if (_locationResult != null) {}
+                                        context
+                                            .read(googleMapsProvider)
+                                            .handleTap(LatLng(
+                                                _locationResult.latitude,
+                                                _locationResult.longitude));
+                                        panelController
+                                            .animatePanelToSnapPoint();
+                                        setState(() {});
+                                      },
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.padded,
+                                      backgroundColor: Colors.yellow,
+                                      child: const Icon(
+                                        Icons.gps_fixed,
+                                        size: 26.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ],
+                        )
+                      : refreshLocation(),
+                );
+              },
+            ),
+          ),
+          Consumer(
+            builder: (context, watch, child) {
+              return watch(amplifyProvider).isFinishUpload == false
+                  ? Center(
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            semanticsLabel: "hi",
+                            value: double.parse(watch(amplifyProvider)
+                                .uploadingValue
+                                .toStringAsFixed(2)),
+                          ),
                         ),
-                      ],
+                      ),
                     )
-                  : refreshLocation(),
-            );
-          },
-        ),
+                  : Container();
+            },
+          )
+        ],
       ),
     );
   }
@@ -923,46 +953,82 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                               left: 8.0,
                               top: 15.0,
                             ),
-                            child: Container(
-                              width: double.infinity,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.grey),
-                                color: Colors.white,
-                                // shape: StadiumBorder(),
-                              ),
-                              // decoration: const ShapeDecoration(
-                              //   color: Colors.white,
-                              //   shape: StadiumBorder(),
-                              // ),
-                              child: TextFormField(
-                                autofillHints: const [AutofillHints.email],
-                                buildCounter: (BuildContext context,
-                                        {required currentLength,
-                                        maxLength,
-                                        required isFocused}) =>
-                                    null,
-                                maxLength: 320,
-                                onChanged: (value) {
-                                  panelController.open();
-                                  setState(() {
-                                    isItemImgEmpty = false;
-                                    isItemImgErr = false;
-                                  });
-                                },
-                                controller: itemImgController,
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Image",
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                  ),
-                                  contentPadding:
-                                      EdgeInsets.only(left: 20, right: 20),
-                                ),
-                              ),
+                            child: ValueListenableBuilder<String>(
+                              builder: (context, value, child) {
+                                return value == ""
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          uploadedUrl.value = await context
+                                              .read(amplifyProvider)
+                                              .upload();
+                                        },
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                            color: Colors.white,
+                                            // shape: StadiumBorder(),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20, right: 20),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: const [
+                                                Text(
+                                                  "Add Image",
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  Icons.add,
+                                                  color: Colors.grey,
+                                                  size: 24.0,
+                                                  semanticLabel:
+                                                      'Text to announce in accessibility modes',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () async {
+                                          uploadedUrl.value = await context
+                                              .read(amplifyProvider)
+                                              .upload();
+                                        },
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 250,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                            color: Colors.white,
+                                            // shape: StadiumBorder(),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Image.network(
+                                              value,
+                                              fit: BoxFit.cover,
+                                              filterQuality: FilterQuality.low,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                              },
+                              valueListenable: uploadedUrl,
                             ),
                           ),
                           if (isItemImgEmpty || isItemImgErr) ...[
@@ -1276,7 +1342,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                                   Navigator.pop(context);
                                 }
                                 if (widget.screenRole == 'drop location') {
-                                  if (itemImgController.text.isEmpty) {
+                                  if (uploadedUrl.value == "") {
                                     setState(() {
                                       isItemImgEmpty = true;
                                     });
@@ -1335,7 +1401,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                                         ((distanceBetweenInMeter - 2000) / 500);
                                   }
 
-                                  if (itemImgController.text.isNotEmpty &&
+                                  if (uploadedUrl.value != "" &&
                                       itemInstructionController
                                           .text.isNotEmpty &&
                                       nameController.text.isNotEmpty &&
@@ -1353,9 +1419,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                                                   .read(cartProvider)
                                                   .items[widget.index]
                                                   .cartId,
-                                              itemImgController.text
-                                                  .trim()
-                                                  .capitalize(),
+                                              uploadedUrl.value,
                                               totalPrice,
                                               itemInstructionController.text
                                                   .trim()
@@ -1398,9 +1462,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                                                   .read(cartProvider)
                                                   .items
                                                   .length,
-                                              itemImgController.text
-                                                  .trim()
-                                                  .capitalize(),
+                                              uploadedUrl.value,
                                               totalPrice,
                                               itemInstructionController.text
                                                   .trim()

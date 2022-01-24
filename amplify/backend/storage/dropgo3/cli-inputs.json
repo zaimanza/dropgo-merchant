@@ -1,0 +1,18 @@
+{
+  "resourceName": "dropgo3",
+  "policyUUID": "8cd5bb56",
+  "bucketName": "dropgo3",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
