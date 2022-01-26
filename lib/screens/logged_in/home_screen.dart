@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       dropLocations.clear();
       context.read(cartProvider).clearCart();
+      totalPriceFloatActionButton.value = 0.0;
       Navigator.push(
         context,
         PageRouteBuilder(

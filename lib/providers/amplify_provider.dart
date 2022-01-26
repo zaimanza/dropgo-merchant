@@ -88,8 +88,8 @@ class AmplifyProvider extends ChangeNotifier {
     try {
       print('In getUrl');
       String key = uploadFileKey;
-      S3GetUrlOptions options = S3GetUrlOptions(
-          accessLevel: StorageAccessLevel.guest, expires: 604800);
+      S3GetUrlOptions options =
+          S3GetUrlOptions(accessLevel: StorageAccessLevel.guest);
       GetUrlResult result =
           await Amplify.Storage.getUrl(key: key, options: options);
       return result.url;
