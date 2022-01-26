@@ -48,6 +48,8 @@ class _OneOrderScreenState extends State<OneOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("LALUing");
+    print(widget.rider);
     return Scaffold(
       backgroundColor: Colors.white.withOpacity(0.95),
       appBar: AppBar(
@@ -165,7 +167,7 @@ class _OneOrderScreenState extends State<OneOrderScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  if (widget.rider == {}) ...[
+                  if (widget.rider != {}) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(5.0),
                       child: Container(
@@ -245,7 +247,7 @@ class _OneOrderScreenState extends State<OneOrderScreen> {
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(5.0),
-                                        color: Colors.green,
+                                        color: Colors.transparent,
                                       ),
                                     ),
                                   ],
