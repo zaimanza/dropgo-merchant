@@ -167,7 +167,7 @@ class _OneOrderScreenState extends State<OneOrderScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  if (widget.rider != {}) ...[
+                  if (widget.rider["name"] != null) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(5.0),
                       child: Container(

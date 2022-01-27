@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropgo/const/string_capital.dart';
 import 'package:flutter/material.dart';
 
@@ -64,8 +65,18 @@ class OrderItemBox extends StatelessWidget {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  itemImg,
+                                // child: Image.network(
+                                //   itemImg,
+                                //   fit: BoxFit.cover,
+                                //   filterQuality: FilterQuality.low,
+                                // ),
+                                child: CachedNetworkImage(
+                                  placeholder: (context, url) => const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  imageUrl: itemImg,
                                   fit: BoxFit.cover,
                                   filterQuality: FilterQuality.low,
                                 ),
