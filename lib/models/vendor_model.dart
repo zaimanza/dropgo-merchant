@@ -7,7 +7,6 @@ class VendorModel {
   String updateAt;
   List<String> orders;
   String accessToken;
-
   VendorModel(
     this.id,
     this.name,
