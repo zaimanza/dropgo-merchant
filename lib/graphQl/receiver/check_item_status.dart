@@ -3,21 +3,9 @@ query CheckItemStatus($trackCode: String!) {
   checkItemStatus(trackCode: $trackCode) {
     _id
     dateCreated
+  
     dateAccepted
-    dateFinish
     item {
-      _id
-      itemState
-      trackCode
-      totalPrice
-      itemImg
-      itemInstruction
-      updateAt
-      receiver {
-        pNumber
-        name
-        _id
-      }
       address {
         _id
         latLng
@@ -28,6 +16,47 @@ query CheckItemStatus($trackCode: String!) {
         postcode
         unitFloor
       }
+      _id
+      itemState
+      trackCode
+      itemImg
+      totalPrice
+      itemInstruction
+      updateAt
+      receiver {
+        _id
+        name
+        pNumber
+      }
+    }
+    dateFinish
+    rider {
+      updateAt
+      wallet {
+        _id
+      }
+      _id
+      name
+      email
+      pNumber
+      liveLatLng
+      profileImg
+      vehicle {
+        _id
+        plateNum
+        type
+        vehicleModel
+      }
+      createAt
+      isWork
+    }
+    vendor {
+      _id
+      name
+      email
+      pNumber
+      createAt
+      updateAt
     }
   }
 }

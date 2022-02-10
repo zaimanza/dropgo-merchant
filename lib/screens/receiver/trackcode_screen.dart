@@ -66,9 +66,9 @@ class _TrackCodeScreenState extends State<TrackCodeScreen> {
       setState(() {
         isLoadingCircularOn = false;
       });
-      print(result.data);
+      print(result.data!["checkItemStatus"]["rider"]);
 
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         PageRouteBuilder(
           pageBuilder: (context, __, ___) => ItemOrderScreen(
@@ -77,8 +77,8 @@ class _TrackCodeScreenState extends State<TrackCodeScreen> {
                 dateFormat(result.data!["checkItemStatus"]["dateCreated"]),
             dateAccepted:
                 dateFormat(result.data!["checkItemStatus"]["dateAccepted"]),
-            dateFinish:
-                dateFormat(result.data!["checkItemStatus"]["dateFinish"]),
+            // dateFinish:
+            //     dateFormat(result.data!["checkItemStatus"]["dateFinish"]),
             item: result.data!["checkItemStatus"]["item"],
             rider: result.data!["checkItemStatus"]["rider"] ?? {},
             trackCode: trackCodeController.text,
