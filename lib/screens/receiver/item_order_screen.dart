@@ -162,7 +162,7 @@ class _ItemOrderScreenState extends State<ItemOrderScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  if (widget.rider == {}) ...[
+                  if (widget.rider["name"] != null) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(5.0),
                       child: Container(
@@ -184,7 +184,6 @@ class _ItemOrderScreenState extends State<ItemOrderScreen> {
                           ],
                         ),
                         child: SizedBox(
-                          height: 130,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -234,6 +233,46 @@ class _ItemOrderScreenState extends State<ItemOrderScreen> {
                                           overflow: TextOverflow.fade,
                                           maxLines: 1,
                                         ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        const Text(
+                                          "Vehicle",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                          overflow: TextOverflow.fade,
+                                          maxLines: 1,
+                                        ),
+                                        Text(
+                                          "Plate Number: " +
+                                              widget.rider["vehicle"]
+                                                  ["plateNum"],
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                          overflow: TextOverflow.fade,
+                                          maxLines: 1,
+                                        ),
+                                        Text(
+                                          "Type: " +
+                                              widget.rider["vehicle"]["type"],
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                          overflow: TextOverflow.fade,
+                                          maxLines: 1,
+                                        ),
+                                        Text(
+                                          "Model: " +
+                                              widget.rider["vehicle"]
+                                                  ["vehicleModel"],
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                          overflow: TextOverflow.fade,
+                                          maxLines: 1,
+                                        ),
                                       ],
                                     ),
                                     Container(
@@ -242,7 +281,7 @@ class _ItemOrderScreenState extends State<ItemOrderScreen> {
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(5.0),
-                                        color: Colors.green,
+                                        color: Colors.transparent,
                                       ),
                                     ),
                                   ],
