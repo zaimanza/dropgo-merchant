@@ -14,10 +14,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "AIzaSyCcpCQLFOxutW1lrW1MWODl5JSYI5D0VQs",
-      appId: "1:137401177883:web:1efdf6ce7eabaab39ee5be",
-      messagingSenderId: "137401177883",
-      projectId: "dropgo-a2b7d",
+      apiKey: "AIzaSyCcpCQ",
+      appId: "1:1374011",
+      messagingSenderId: "13740",
+      projectId: "dropg",
     ),
   );
   await initHiveForFlutter();
