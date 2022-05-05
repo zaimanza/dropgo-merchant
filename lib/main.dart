@@ -12,7 +12,14 @@ import 'graphQl/graph_ql_api.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyCcpCQLFOxutW1lrW1MWODl5JSYI5D0VQs",
+      appId: "1:137401177883:web:1efdf6ce7eabaab39ee5be",
+      messagingSenderId: "137401177883",
+      projectId: "dropgo-a2b7d",
+    ),
+  );
   await initHiveForFlutter();
 
   runApp(

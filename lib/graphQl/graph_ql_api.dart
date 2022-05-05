@@ -2,7 +2,6 @@ import 'package:dropgo/providers/vendor_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 ValueNotifier<GraphQLClient> client = ValueNotifier<GraphQLClient>(clientQuery);
 
